@@ -1,23 +1,37 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect, useState } from "react";
+import Row from "./components/Row";
+
+const url = 'https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=10&page=1&sparkline=false';
 
 function App() {
+
+  let [arr, setArr] = useState([]);
+console.log(arr);
+  const fetchData = async (url) => {
+    try {
+      const res = await fetch(url);
+      const data = await res.json();
+      setArr(data);
+
+
+    }
+    catch (e) {
+      console.log("Error", e);
+    }
+  }
+
+  useEffect(() => {
+    fetchData(url);
+  },[]);
+
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <table style={{borderCollapse:"collapse",background:"#1A1A1C", color:"white",margin:"0% 19%"}}>
+        <tbody>
+          <Row arr={arr} />
+        </tbody>
+      </table>
     </div>
   );
 }
